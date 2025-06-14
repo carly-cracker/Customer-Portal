@@ -65,3 +65,133 @@ h1, h2, h3 {
 .login-form button:hover {
   background-color: #388e3c;
 }
+
+.signup-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 2rem;
+  border-radius: 12px;
+  background-color: #f4fff7;
+  box-shadow: 0 4px 8px rgba(0, 128, 0, 0.1);
+  border: 1px solid #c8e6c9;
+}
+
+.signup-container h2 {
+  text-align: center;
+  color: #2e7d32;
+  margin-bottom: 1.5rem;
+}
+
+.signup-form label {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+.signup-form input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #a5d6a7;
+  border-radius: 8px;
+  background-color: #ffffff;
+  font-size: 1rem;
+}
+
+.signup-form input:focus {
+  border-color: #66bb6a;
+  outline: none;
+  box-shadow: 0 0 4px #66bb6a66;
+}
+
+.signup-form button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #43a047;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.signup-form button:hover {
+  background-color: #388e3c;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e6f4ea;
+  padding: 1rem 1.5rem;
+  border-bottom: 2px solid #b2d8b2;
+  position: relative;
+}
+
+.app-title {
+  text-decoration: none;
+  color: #2e7d32;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #2e7d32;
+  cursor: pointer;
+}
+
+/* Default nav layout */
+.header-nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.header-nav a,
+.logout-btn {
+  text-decoration: none;
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* ===== Mobile Styling (≤ 400px) ===== */
+@media (max-width: 400px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .header-nav {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background-color: #f0fff0;
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0.75rem;
+    border-bottom: 2px solid #b2d8b2;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .header-nav.show {
+    display: flex;
+  }
+
+  .header-nav a,
+  .logout-btn {
+    font-size: 1rem;
+  }
+}
