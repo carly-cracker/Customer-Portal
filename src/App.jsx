@@ -4,12 +4,15 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      
-    </>
+    <BrowserRouter>
+     <Routes>
+      <Route path='/' element={<Home/>}/>
+      <Route path='/tickets' element={<Tickets/>}/>
+      <Route path='/tickets/:id' element={<TicketDetail/>}/>
+     </Routes>
+    </BrowserRouter>
   )
 }
 
