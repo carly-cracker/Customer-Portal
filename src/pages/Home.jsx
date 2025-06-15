@@ -38,29 +38,35 @@ function Home() {
   };
 
   const handleSubmitTicket = (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!newTicket.title || !newTicket.description) {
-      alert("Please fill in all fields.");
-      return;
-    }
+  if (!newTicket.title || !newTicket.description) {
+    alert("Please fill in all fields.");
+    return;
+  }
 
-    fetch("http://localhost:3000/tickets", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(newTicket)
-    })
-      .then((res) => res.json())
-      .then((createdTicket) => {
-        setTickets([...tickets, createdTicket]);
-        setFiltered([...filtered, createdTicket]);
-        setNewTicket({ title: "", description: "", priority: "Low" });
-        alert("Ticket submitted successfully!");
-      })
-      .catch((err) => console.error("Error creating ticket:", err));
+  const ticketToSend = {
+    ...newTicket,
+    status: "open", // Default status
+    openedDate: new Date().toISOString(), // Current date/time
   };
+
+  fetch("http://localhost:3000/tickets", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(ticketToSend)
+  })
+    .then((res) => res.json())
+    .then((createdTicket) => {
+      setTickets([...tickets, createdTicket]);
+      setFiltered([...filtered, createdTicket]);
+      setNewTicket({ title: "", description: "", priority: "Low" });
+      alert("Ticket submitted successfully!");
+    })
+    .catch((err) => console.error("Error creating ticket:", err));
+};
 
   useEffect(() => {
     document.body.className = darkMode ? "dark-mode" : "light-mode";

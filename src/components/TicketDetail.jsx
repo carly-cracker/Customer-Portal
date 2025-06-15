@@ -1,59 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function TicketDetail({ ticket }) {
   const [comment, setComment] = useState("");
-  const [comments, setComments] = useState(ticket.comments || []);
-  const [status, setStatus] = useState(ticket.status); // local status state
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://localhost:3000/comments?ticketId=${ticket.id}`)
+      .then((res) => res.json())
+      .then(setComments)
+      .catch((err) => console.error("Failed to load comments", err));
+  }, [ticket.id]);
 
   const handleAddComment = (e) => {
     e.preventDefault();
     if (!comment.trim()) return;
 
     const newComment = {
-      id: Date.now(),
+      ticketId: ticket.id,
       text: comment,
       timestamp: new Date().toISOString(),
     };
 
-    setComments([...comments, newComment]);
-    setComment("");
-
-    fetch(`http://localhost:3000/tickets/${ticket.id}/comments`, {
+    fetch("http://localhost:3000/comments", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newComment),
-    });
-  };
-
-  const handleStatusChange = (e) => {
-    const newStatus = e.target.value;
-    setStatus(newStatus);
-
-    // Send PATCH to backend
-    fetch(`http://localhost:3000/tickets/${ticket.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: newStatus }),
     })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to update status");
+      .then((res) => res.json())
+      .then((data) => {
+        setComments([...comments, data]);
+        setComment("");
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error("Error posting comment:", err));
   };
 
   return (
     <div className="ticket-detail">
       <h3>{ticket.title}</h3>
-
-      <label>
-        Status:{" "}
-        <select value={status} onChange={handleStatusChange}>
-          <option value="open">Open</option>
-          <option value="in-progress">In Progress</option>
-          <option value="resolved">Resolved</option>
-        </select>
-      </label>
-
+      <p>
+        Status: <strong>{ticket.status}</strong>
+      </p>
       <p>Opened: {new Date(ticket.openedDate).toLocaleString()}</p>
 
       <hr />

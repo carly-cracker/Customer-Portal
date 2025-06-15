@@ -1,59 +1,50 @@
 {
   "tickets": [
     {
-      "id": "1",
-      "title": "Unable to login",
-      "status": "open",
-      "openedDate": "2025-06-14T09:00:00.000Z",
-      "comments": [
-        {
-          "id": 101,
-          "text": "I can't log into my account since this morning.",
-          "timestamp": "2025-06-14T09:05:00.000Z"
-        },
-        {
-          "id": 102,
-          "text": "We are looking into this issue.",
-          "timestamp": "2025-06-14T10:00:00.000Z"
-        }
-      ]
-    },
-    {
       "id": "2",
       "title": "App crashing on launch",
-      "status": "resolved",
-      "openedDate": "2025-06-13T15:30:00.000Z",
-      "comments": [
-        {
-          "id": 103,
-          "text": "App crashes every time I open it on Android.",
-          "timestamp": "2025-06-13T15:35:00.000Z"
-        }
-      ]
+      "status": "in-progress",
+      "openedDate": "2025-06-13T15:30:00.000Z"
     },
     {
-      "id": "3",
-      "title": "Feature request: Dark mode toggle",
-      "status": "closed",
-      "openedDate": "2025-06-10T11:20:00.000Z",
-      "comments": [
-        {
-          "id": 104,
-          "text": "Dark mode would be great for night use.",
-          "timestamp": "2025-06-10T11:25:00.000Z"
-        },
-        {
-          "id": 105,
-          "text": "This has now been added. Thank you!",
-          "timestamp": "2025-06-12T08:00:00.000Z"
-        }
-      ]
-    },
-    {
-      "id": "f34b",
-      "title": "wifi buffer",
-      "description": "my wifi has been buffering since morning",
+      "id": "597a",
+      "title": "Buffering wifi",
+      "description": "I have bee experiencing wifi buffering from last night",
       "priority": "High"
+    },
+    {
+      "id": "0702",
+      "title": "login issues",
+      "description": "I tried to login to my account but its failing",
+      "priority": "Normal",
+      "status": "open",
+      "openedDate": "2025-06-15T09:23:43.713Z"
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "ticketId": 2,
+      "text": "App crashes every time I open it on Android.",
+      "timestamp": "2025-06-13T15:35:00.000Z"
+    },
+    {
+      "id": "f353",
+      "ticketId": "2",
+      "text": "The support team has resolved the matter",
+      "timestamp": "2025-06-15T08:54:41.389Z"
+    },
+    {
+      "id": "6fa4",
+      "ticketId": "597a",
+      "text": "still havent got any reply from the support team\n",
+      "timestamp": "2025-06-15T09:12:11.643Z"
+    },
+    {
+      "id": "e137",
+      "ticketId": "0702",
+      "text": "still trying but nothing",
+      "timestamp": "2025-06-15T09:24:10.714Z"
     }
   ]
 }
