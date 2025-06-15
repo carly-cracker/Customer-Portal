@@ -1,4 +1,22 @@
 {
-  "tickets": [],
-  "comments": []
+  "tickets": [
+    {
+      "id": 1,
+      "title": "Login issue",
+      "description": "Can't log in with my credentials",
+      "priority": "High"
+    },
+    {
+      "id": 2,
+      "title": "Password reset broken",
+      "description": "Reset link does not work",
+      "priority": "Normal"
+    },
+    {
+      "id": "dbd6",
+      "title": "lost password",
+      "description": "I forgot my password help to retrieve",
+      "priority": "High"
+    }
+  ]
 }
