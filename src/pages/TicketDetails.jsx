@@ -1,30 +1,35 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import TicketDetail from "../components/TicketDetail";
+import { doc, onSnapshot } from "firebase/firestore";
+import {db} from "../firebase"; 
 
 function TicketDetails() {
-  const { id } = useParams(); // Get the ticket ID from the URL
+  const { id } = useParams(); 
   const [ticket, setTicket] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`https://customer-portal-server.vercel.app/tickets/${id}`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to fetch ticket.");
+    const unsub = onSnapshot(
+      doc(db, "tickets", id),
+      (docSnap) => {
+        if (docSnap.exists()) {
+          setTicket({ id: docSnap.id, ...docSnap.data() });
+          setLoading(false);
+        } else {
+          setError("Ticket not found");
+          setLoading(false);
         }
-        return res.json();
-      })
-      .then((data) => {
-        setTicket(data);
+      },
+      (err) => {
+        console.error("Error fetching ticket:", err);
+        setError("Failed to fetch ticket.");
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setError("Ticket not found");
-        setLoading(false);
-      });
+      }
+    );
+
+    return () => unsub(); 
   }, [id]);
 
   if (loading) return <p>Loading ticket...</p>;

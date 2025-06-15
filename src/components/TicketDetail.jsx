@@ -1,3 +1,5 @@
+import { db } from "../firebase"; 
+import { collection, addDoc, onSnapshot, query, where, serverTimestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 function TicketDetail({ ticket }) {
@@ -5,34 +7,43 @@ function TicketDetail({ ticket }) {
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    fetch(`https://customer-portal-server.vercel.app/comments?ticketId=${ticket.id}`)
-      .then((res) => res.json())
-      .then(setComments)
-      .catch((err) => console.error("Failed to load comments", err));
+    if (!ticket?.id) return;
+
+    const q = query(
+      collection(db, "comments"),
+      where("ticketId", "==", ticket.id)
+    );
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const data = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      data.sort((a, b) => a.timestamp?.seconds - b.timestamp?.seconds);
+      setComments(data);
+    });
+
+    return () => unsubscribe();
   }, [ticket.id]);
 
-  const handleAddComment = (e) => {
+  const handleAddComment = async (e) => {
     e.preventDefault();
     if (!comment.trim()) return;
 
     const newComment = {
       ticketId: ticket.id,
       text: comment,
-      timestamp: new Date().toISOString(),
+      timestamp: serverTimestamp(),
     };
 
-    fetch("https://customer-portal-server.vercel.app/comments", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newComment),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setComments([...comments, data]);
-        setComment("");
-      })
-      .catch((err) => console.error("Error posting comment:", err));
+    try {
+      await addDoc(collection(db, "comments"), newComment);
+      setComment(""); 
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
   };
+
 
   return (
     <div className="ticket-detail">

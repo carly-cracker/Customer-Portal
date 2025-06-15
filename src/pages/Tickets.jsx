@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import TicketList from "../components/TicketList";
+import { collection, onSnapshot } from "firebase/firestore";
+import {db} from "../firebase";
 
 function Tickets() {
   const [tickets, setTickets] = useState([]);
@@ -7,27 +9,17 @@ function Tickets() {
   const [lastUpdated, setLastUpdated] = useState(null);
 
   useEffect(() => {
-    const fetchTickets = () => {
-      fetch("https://customer-portal-server.vercel.app/tickets")
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("Fetched tickets:", data);
-          setTickets(data);
-          setLastUpdated(new Date()); 
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error("Failed to fetch tickets:", err);
-          setLoading(false);
-        });
-    };
+    const unsub = onSnapshot(collection(db, "tickets"), (snapshot) => {
+        const ticketData = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+        setTickets(ticketData);
+        setLoading(false);
+    });
 
-    fetchTickets(); // Initial fetch
-
-    const intervalId = setInterval(fetchTickets, 30000); 
-
-    return () => clearInterval(intervalId); 
-  }, []);
+    return () => unsub(); 
+    }, []);
 
   if (loading) return <div className='spinner'></div>
 

@@ -6,6 +6,8 @@ import TicketDetails from './pages/TicketDetails';
 import Home from './pages/Home';
 import './App.css'
 import Tickets from './pages/Tickets';
+import {seedFirestore} from "./seedFirestore";
+seedFirestore()
 
 function App() {
   return (

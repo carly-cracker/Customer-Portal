@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { collection, onSnapshot, addDoc, serverTimestamp } from "firebase/firestore";
+import {db} from "../firebase";
 
 function Home() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -15,16 +17,20 @@ function Home() {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    fetch("https://customer-portal-server.vercel.app/tickets")
-      .then((res) => res.json())
-      .then((data) => {
-        setTickets(data);
-        setFiltered(data);
-        setLoading(false)
-      })
-      .catch((err) => {console.error("Error fetching tickets:", err)
-        setLoading(false)
-      });
+    const unsubscribe = onSnapshot(collection(db, "tickets"), (snapshot) => {
+      const data = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setTickets(data);
+      setFiltered(data);
+      setLoading(false);
+    }, (err) => {
+      console.error("Error fetching tickets:", err);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const handleSearch = (e) => {
@@ -32,7 +38,7 @@ function Home() {
     setSearchTerm(term);
     const results = tickets.filter(ticket =>
       ticket.title.toLowerCase().includes(term) ||
-      ticket.id.toString() === term
+      ticket.id.toString().includes(term)
     );
     setFiltered(results);
   };
@@ -41,43 +47,34 @@ function Home() {
     setNewTicket({ ...newTicket, [e.target.name]: e.target.value });
   };
 
-  const handleSubmitTicket = (e) => {
-  e.preventDefault();
+  const handleSubmitTicket = async (e) => {
+    e.preventDefault();
 
-  if (!newTicket.title || !newTicket.description) {
-    alert("Please fill in all fields.");
-    return;
-  }
+    if (!newTicket.title || !newTicket.description) {
+      alert("Please fill in all fields.");
+      return;
+    }
 
-  const ticketToSend = {
-    ...newTicket,
-    status: "open", // Default status
-    openedDate: new Date().toISOString(), // Current date/time
-  };
+    try {
+      await addDoc(collection(db, "tickets"), {
+        ...newTicket,
+        status: "open",
+        openedDate: serverTimestamp(),
+      });
 
-  fetch("https://customer-portal-server.vercel.app/tickets", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(ticketToSend)
-  })
-    .then((res) => res.json())
-    .then((createdTicket) => {
-      setTickets([...tickets, createdTicket]);
-      setFiltered([...filtered, createdTicket]);
       setNewTicket({ title: "", description: "", priority: "Low" });
       alert("Ticket submitted successfully!");
-    })
-    .catch((err) => console.error("Error creating ticket:", err));
-};
+    } catch (error) {
+      console.error("Error creating ticket:", error);
+      alert("Failed to submit ticket. Try again.");
+    }
+  };
 
   useEffect(() => {
     document.body.className = darkMode ? "dark-mode" : "light-mode";
   }, [darkMode]);
 
   if (loading) return <div className="spinner"></div>;
-
 
   return (
     <div className="home-container">
@@ -97,7 +94,6 @@ function Home() {
           placeholder="Search tickets by title or ID"
           className="search-input"
         />
-
         <ul className="search-results">
           {filtered.map(ticket => (
             <li key={ticket.id}>
