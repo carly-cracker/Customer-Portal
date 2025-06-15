@@ -9,7 +9,7 @@ function TicketDetails() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/tickets/${id}`)
+    fetch(`https://customer-portal-server.vercel.app/tickets/${id}`)
       .then((res) => {
         if (!res.ok) {
           throw new Error("Failed to fetch ticket.");

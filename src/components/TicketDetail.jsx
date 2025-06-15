@@ -5,7 +5,7 @@ function TicketDetail({ ticket }) {
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/comments?ticketId=${ticket.id}`)
+    fetch(`https://customer-portal-server.vercel.app/comments?ticketId=${ticket.id}`)
       .then((res) => res.json())
       .then(setComments)
       .catch((err) => console.error("Failed to load comments", err));
@@ -21,7 +21,7 @@ function TicketDetail({ ticket }) {
       timestamp: new Date().toISOString(),
     };
 
-    fetch("http://localhost:3000/comments", {
+    fetch("https://customer-portal-server.vercel.app/comments", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newComment),

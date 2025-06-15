@@ -15,7 +15,7 @@ function Home() {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:3000/tickets")
+    fetch("https://customer-portal-server.vercel.app/tickets")
       .then((res) => res.json())
       .then((data) => {
         setTickets(data);
@@ -55,7 +55,7 @@ function Home() {
     openedDate: new Date().toISOString(), // Current date/time
   };
 
-  fetch("http://localhost:3000/tickets", {
+  fetch("https://customer-portal-server.vercel.app/tickets", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -75,7 +75,7 @@ function Home() {
   useEffect(() => {
     document.body.className = darkMode ? "dark-mode" : "light-mode";
   }, [darkMode]);
-  
+
   if (loading) return <div className="spinner"></div>;
 
 

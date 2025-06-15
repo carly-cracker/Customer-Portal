@@ -8,7 +8,7 @@ function Tickets() {
 
   useEffect(() => {
     const fetchTickets = () => {
-      fetch("http://localhost:3000/tickets")
+      fetch("https://customer-portal-server.vercel.app/tickets")
         .then((res) => res.json())
         .then((data) => {
           console.log("Fetched tickets:", data);
