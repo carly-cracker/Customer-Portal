@@ -29,7 +29,7 @@ function Tickets() {
     return () => clearInterval(intervalId); 
   }, []);
 
-  if (loading) return <p>Loading tickets...</p>;
+  if (loading) return <div className='spinner'></div>
 
   return (
     <div className="tickets-page">

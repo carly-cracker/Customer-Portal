@@ -5,6 +5,7 @@ function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [tickets, setTickets] = useState([]);
   const [filtered, setFiltered] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [newTicket, setNewTicket] = useState({
     title: "",
     description: "",
@@ -19,8 +20,11 @@ function Home() {
       .then((data) => {
         setTickets(data);
         setFiltered(data);
+        setLoading(false)
       })
-      .catch((err) => console.error("Error fetching tickets:", err));
+      .catch((err) => {console.error("Error fetching tickets:", err)
+        setLoading(false)
+      });
   }, []);
 
   const handleSearch = (e) => {
@@ -71,6 +75,9 @@ function Home() {
   useEffect(() => {
     document.body.className = darkMode ? "dark-mode" : "light-mode";
   }, [darkMode]);
+  
+  if (loading) return <div className="spinner"></div>;
+
 
   return (
     <div className="home-container">
