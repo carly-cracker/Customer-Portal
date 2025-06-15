@@ -11,6 +11,10 @@ A simple customer support ticketing portal built with **React**, **Firebase (Fir
 -  Real-time updates via Firestore
 -  Automatically stores `openedDate` timestamp on ticket creation
 
+## Future Features
+-  User auth(real time via firabase)
+-  Admin rights
+
 ##  Project Structure
 
 ```
