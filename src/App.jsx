@@ -11,7 +11,7 @@ seedFirestore()
 
 function App() {
   return (
-    <BrowserRouter>
+    <>
       <Header />
       <Routes>
         <Route path ='/' element={<Home/>}/>
@@ -20,8 +20,8 @@ function App() {
         <Route  path='/tickets' element={<Tickets/>}/>
         <Route path='/tickets/:id' element={<TicketDetails />} />
       </Routes>
-    </BrowserRouter>
-  );
+    </>
+  )
 }
 
 export default App;
