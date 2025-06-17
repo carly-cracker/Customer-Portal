@@ -51,7 +51,7 @@ function TicketDetail({ ticket }) {
       <p>
         Status: <strong>{ticket.status}</strong>
       </p>
-      <p>Opened: {new Date(ticket.openedDate).toLocaleString()}</p>
+      <p>Opened:{" "}{ticket.openedDate?.toDate?.()? ticket.openedDate.toDate().toLocaleString(): "Not available"}</p>
 
       <hr />
 
@@ -61,7 +61,8 @@ function TicketDetail({ ticket }) {
           comments.map((c) => (
             <li key={c.id}>
               <div>{c.text}</div>
-              <small>{new Date(c.timestamp).toLocaleString()}</small>
+              <small>{c.timestamp?.toDate?.()? c.timestamp.toDate().toLocaleString(): "Time not available"}</small>
+
             </li>
           ))
         ) : (
