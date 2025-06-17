@@ -95,11 +95,17 @@ function Home() {
           className="search-input"
         />
         <ul className="search-results">
-          {filtered.map(ticket => (
-            <li key={ticket.id}>
-              <Link to={`/tickets/${ticket.id}`}>{ticket.title}</Link>
-            </li>
-          ))}
+          {filtered.map(ticket => {
+            const opened = ticket.openedDate?.toDate
+              ? ticket.openedDate.toDate().toLocaleString()
+              : "Not available";
+            return (
+              <li key={ticket.id}>
+                <Link to={`/tickets/${ticket.id}`}>{ticket.title}</Link>
+                <div className="ticket-meta">Opened: {opened}</div>
+              </li>
+            );
+          })}
         </ul>
       </div>
 
